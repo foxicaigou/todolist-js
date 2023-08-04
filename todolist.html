@@ -26,6 +26,9 @@
 
     <footer>今天又是元气满满的一天！</footer>
 
+
+
+    <!-- js -->
     <script>
         // 获取对象
         const add = document.querySelector("#add");
@@ -33,7 +36,7 @@
         const todocount = document.querySelector("#todocount");
 
         const todos = JSON.parse(localStorage.getItem("todos")) || [];
-        
+
         // 初始化渲染
         render();
 
@@ -41,7 +44,7 @@
         add.addEventListener('keydown', keydownHandler);
         todolist.addEventListener("click", clickHandler);
         todolist.addEventListener("change", changeHandler);
-        
+
         // 新增待办事件处理函数---enter
         function keydownHandler(e) {
             if (e.key === "Enter" && add.value.trim() !== "") {
@@ -53,7 +56,7 @@
                 return;
             }
         }
-        
+
         // 完成待办事件处理函数---click
         function clickHandler(e) {
             if (e.target.tagName !== "BUTTON") {

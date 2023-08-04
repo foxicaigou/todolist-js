@@ -8,3 +8,5 @@
 
 ## 使用方法
 下载本地后直接用浏览器打开todolist.html即可
+
+ps:JS内置到HTML里了
