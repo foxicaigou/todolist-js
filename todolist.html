@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="todolist.css" rel="stylesheet">
     <title>待办清单</title>
 </head>
 
@@ -13,63 +14,80 @@
         <h1>待办清单</h1>
         <section>
             <label for="add">要做些什么呢？</label>
+            <br>
             <input id="add" type="text" placeholder="添加待办" required="required"></input>
         </section>
     </header>
 
     <section>
-        <h2>正在进行中<span id="todocount">0</span></h2>
+        <h2>正在进行中 <span id="todocount">0</span></h2>
         <ol id="todolist"></ol>
     </section>
 
     <footer>今天又是元气满满的一天！</footer>
 
     <script>
+        // 获取对象
         const add = document.querySelector("#add");
         const todolist = document.querySelector("#todolist");
+        const todocount = document.querySelector("#todocount");
 
         const todos = JSON.parse(localStorage.getItem("todos")) || [];
-
+        
+        // 初始化渲染
         render();
 
-
+        // 添加事件监听
         add.addEventListener('keydown', keydownHandler);
         todolist.addEventListener("click", clickHandler);
-
+        todolist.addEventListener("change", changeHandler);
+        
+        // 新增待办事件处理函数---enter
         function keydownHandler(e) {
-            // console.log(e.key);
-            if (e.key = "Enter" && add.value.trim() !== "") {
+            if (e.key === "Enter" && add.value.trim() !== "") {
                 todos.push(add.value);
                 localStorage.setItem("todos", JSON.stringify(todos));
                 add.value = "";
                 render();
-            };
+            } else {
+                return;
+            }
+        }
+        
+        // 完成待办事件处理函数---click
+        function clickHandler(e) {
+            if (e.target.tagName !== "BUTTON") {
+                return;
+            } else {
+                // 通过li和ol获取其索引
+                let index = Array.from(todolist.children).indexOf(
+                    e.target.parentNode
+                );
+                todos.splice(index, 1);
+                render();
+            }
         }
 
-        function clickHandler(e) {
-            // console.log(e.target.tagName);
-            // console.log(e.target.parentNode);console.log(e.target.parentElement);
-            if (e.target.tagName !== "BUTTON")
-                return;
-            // 通过li和ol获取其索引
+        // 修改待办事件处理函数---change
+        function changeHandler(e) {
             let index = Array.from(todolist.children).indexOf(
                 e.target.parentNode
             );
-            // console.log(index);
-            // console.log(todos[index]);
-            todos.splice(index,1);
+            todos.splice(index, 1, e.target.value);
             render();
         }
 
 
+        // 渲染函数
         function render() {
             // 先删完
             todolist.replaceChildren();
             // 后更新
+            todocount.innerText = todos.length;
             localStorage.setItem("todos", JSON.stringify(todos));
             todos.forEach((content) => {
                 let item = document.createElement("li");
-                item.innerHTML = `${content}<button>删除</button>`;
+                item.innerHTML = `<input type="text" value="${content}"></input><button class="delbtn">完成</button>`;
                 todolist.appendChild(item);
             });
         }
