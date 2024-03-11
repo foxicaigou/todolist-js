@@ -1,5 +1,5 @@
 body {
-    background-image: url(/background.webp);
+    background-image: url(background.webp);
     /* 背景图垂直、水平均居中 */
     background-position: center center;
     /* 背景图不平铺 */
